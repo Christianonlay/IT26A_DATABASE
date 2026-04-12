@@ -4,8 +4,7 @@ package midtermproject;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
-import javax.swing.table.TableRowSorter;
-import javax.swing.RowFilter;
+
 
 /**
  *
@@ -15,7 +14,7 @@ public class Home extends javax.swing.JFrame {
     
    
        private int selectedId = -1;
-       private TableRowSorter<DefaultTableModel> sorter;
+      
        public Home() {
          initComponents(); 
 
@@ -25,9 +24,7 @@ public class Home extends javax.swing.JFrame {
 
     loadUsers();
 
-    sorter = new TableRowSorter<>((DefaultTableModel) jTable1.getModel());
-    jTable1.setRowSorter(sorter);
-
+   
     tableClick();
     }
 private void loadUsers() {
