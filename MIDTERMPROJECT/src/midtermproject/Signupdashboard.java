@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package midtermproject;
+
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 
 /**
  *
@@ -69,6 +72,11 @@ public class Signupdashboard extends javax.swing.JFrame {
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(459, 342, 90, -1));
 
         jButton2.setText("Register");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 80, 20));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Screenshot 2026-04-12 144512.png"))); // NOI18N
@@ -95,11 +103,59 @@ public class Signupdashboard extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        Logindashboaard dashh = new Logindashboaard();
+        dashh.setVisible(true);
+        dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         String username = jTextField1.getText();
+    String password = new String(jPasswordField1.getPassword());
+
+    if (username.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill all fields!");
+        return;
+    }
+
+    try {
+        Connection conn = CONNECTDATABASES.getConnection();
+
+        // check duplicate username
+        String checkSql = "SELECT * FROM users WHERE username=?";
+        PreparedStatement checkPst = conn.prepareStatement(checkSql);
+        checkPst.setString(1, username);
+
+        ResultSet rs = checkPst.executeQuery();
+
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(null, "Username already exists!");
+            return;
+        }
+
+        // INSERT (PLAIN TEXT PASSWORD)
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        PreparedStatement pst = conn.prepareStatement(sql);
+
+        pst.setString(1, username);
+        pst.setString(2, password); // ✅ PLAIN TEXT ONLY
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(null, "Registration Successful!");
+
+        new Logindashboaard().setVisible(true);
+        dispose();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
