@@ -125,6 +125,11 @@ private void loadUsers() {
         });
 
         jButton5.setText("logout");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -205,34 +210,7 @@ private void loadUsers() {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (selectedId == -1) {
-        JOptionPane.showMessageDialog(this, "Select a user first!");
-        return;
-    }
-
-    try {
-        Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/ONLAY",
-            "root",
-            ""
-        );
-
-        String sql = "SELECT username, password FROM users WHERE id=?";
-        PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setInt(1, selectedId);
-
-        ResultSet rs = pst.executeQuery();
-
-        if (rs.next()) {
-            JOptionPane.showMessageDialog(this,
-                "Username: " + rs.getString("username") +
-                "\nPassword: " + rs.getString("password")
-            );
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage());
-    }
+       
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -268,6 +246,10 @@ private void loadUsers() {
         JOptionPane.showMessageDialog(this, e.getMessage());
     }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
