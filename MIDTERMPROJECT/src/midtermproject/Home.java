@@ -1,8 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package midtermproject;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 /**
  *
@@ -10,15 +13,61 @@ package midtermproject;
  */
 public class Home extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Home.class.getName());
+   
+       private int selectedId = -1;
+       private TableRowSorter<DefaultTableModel> sorter;
+       public Home() {
+         initComponents(); 
 
-    /**
-     * Creates new form Home
-     */
-    public Home() {
-        initComponents();
+    jTable1.setModel(new DefaultTableModel(
+        new Object[]{"ID", "NAME"}, 0
+    ));
+
+    loadUsers();
+
+    sorter = new TableRowSorter<>((DefaultTableModel) jTable1.getModel());
+    jTable1.setRowSorter(sorter);
+
+    tableClick();
     }
+private void loadUsers() {
+        try {
+            Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/ONLAY",
+                "root",
+                ""
+            );
 
+            String sql = "SELECT id, username FROM users";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getInt("id"),
+                    rs.getString("username")
+                });
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+    }
+ private void tableClick() {
+    jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int row = jTable1.getSelectedRow();
+
+            if (row != -1) {
+                selectedId = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
+            }
+        }
+    });
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,6 +104,11 @@ public class Home extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("delete");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -63,14 +117,14 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("jButton3");
+        jButton3.setText("read");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
 
-        jButton5.setText("jButton5");
+        jButton5.setText("logout");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -78,7 +132,7 @@ public class Home extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,11 +175,99 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        if (selectedId == -1) {
+        JOptionPane.showMessageDialog(this, "Select a user first!");
+        return;
+    }
+
+    try {
+        Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/ONLAY",
+            "root",
+            ""
+        );
+
+        String sql = "DELETE FROM users WHERE id=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, selectedId);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Deleted successfully!");
+
+        loadUsers(); // refresh table
+        selectedId = -1;
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        if (selectedId == -1) {
+        JOptionPane.showMessageDialog(this, "Select a user first!");
+        return;
+    }
+
+    try {
+        Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/ONLAY",
+            "root",
+            ""
+        );
+
+        String sql = "SELECT username, password FROM users WHERE id=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setInt(1, selectedId);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(this,
+                "Username: " + rs.getString("username") +
+                "\nPassword: " + rs.getString("password")
+            );
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         if (selectedId == -1) {
+        JOptionPane.showMessageDialog(this, "Select a user first!");
+        return;
+    }
+
+    String newUsername = JOptionPane.showInputDialog(this, "Enter new username:");
+
+    if (newUsername == null || newUsername.trim().isEmpty()) return;
+
+    try {
+        Connection conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/ONLAY",
+            "root",
+            ""
+        );
+
+        String sql = "UPDATE users SET username=? WHERE id=?";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, newUsername);
+        pst.setInt(2, selectedId);
+
+        pst.executeUpdate();
+
+        JOptionPane.showMessageDialog(this, "Updated successfully!");
+
+        loadUsers();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

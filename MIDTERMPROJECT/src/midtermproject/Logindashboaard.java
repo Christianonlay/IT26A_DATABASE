@@ -165,6 +165,10 @@ try {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Signupdashboard dashh = new Signupdashboard();
+        dashh.setVisible(true);
+        dispose();
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
