@@ -95,7 +95,7 @@ public class Logindashboaard extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 90, 30));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 90, 30));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/Screenshot 2026-04-12 144512.png"))); // NOI18N

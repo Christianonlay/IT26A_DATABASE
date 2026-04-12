@@ -23,7 +23,7 @@ public class Home extends javax.swing.JFrame {
          initComponents(); 
 
     jTable1.setModel(new DefaultTableModel(
-        new Object[]{"ID", "NAME"}, 0
+        new Object[]{"HOUSE_NUMBER", "NAME"}, 0
     ));
 
     loadUsers();
@@ -86,10 +86,13 @@ private void loadUsers() {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         jButton4.setText("jButton4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -99,10 +102,12 @@ private void loadUsers() {
                 {null, null}
             },
             new String [] {
-                "ID", "NAME"
+                "HOUSE_NUMEBER", "NAME"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 280, 340));
 
         jButton1.setText("update");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +115,7 @@ private void loadUsers() {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, 100, -1));
 
         jButton2.setText("delete");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +123,7 @@ private void loadUsers() {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, 100, -1));
 
         jButton3.setText("read");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +131,7 @@ private void loadUsers() {
                 jButton3ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 210, 100, -1));
 
         jButton5.setText("logout");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -131,39 +139,11 @@ private void loadUsers() {
                 jButton5ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 330, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(89, 89, 89))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton5)
-                        .addGap(25, 25, 25))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(jButton1)
-                .addGap(47, 47, 47)
-                .addComponent(jButton2)
-                .addGap(51, 51, 51)
-                .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
-                .addComponent(jButton5)
-                .addGap(33, 33, 33))
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/stream_your_favorite_shows_with_smarters_pro_by_smarterspro_dh3ew6p-fullview.jpg"))); // NOI18N
+        jLabel1.setText("jLabel1");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-2, 0, 530, 380));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -209,38 +189,6 @@ private void loadUsers() {
     }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        if (selectedId == -1) {
-        JOptionPane.showMessageDialog(this, "Select a user first!");
-        return;
-    }
-
-    try {
-        Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/ONLAY",
-            "root",
-            ""
-        );
-
-        String sql = "SELECT username, password FROM users WHERE id=?";
-        PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setInt(1, selectedId);
-
-        ResultSet rs = pst.executeQuery();
-
-        if (rs.next()) {
-            JOptionPane.showMessageDialog(this,
-                "Username: " + rs.getString("username") +
-                "\nPassword: " + rs.getString("password")
-            );
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage());
-    }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
          if (selectedId == -1) {
@@ -282,6 +230,38 @@ private void loadUsers() {
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (selectedId == -1) {
+            JOptionPane.showMessageDialog(this, "Select a user first!");
+            return;
+        }
+
+        try {
+            Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/ONLAY",
+                "root",
+                ""
+            );
+
+            String sql = "SELECT username, password FROM users WHERE id=?";
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setInt(1, selectedId);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this,
+                    "Username: " + rs.getString("username") +
+                    "\nPassword: " + rs.getString("password")
+                );
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -313,6 +293,7 @@ private void loadUsers() {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
