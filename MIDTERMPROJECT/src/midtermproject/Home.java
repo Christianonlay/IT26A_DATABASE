@@ -4,6 +4,9 @@ package midtermproject;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 
 
 /**
@@ -12,6 +15,7 @@ import java.sql.*;
  */
 public class Home extends javax.swing.JFrame {
     
+   private static final Logger logger = Logger.getLogger(Home.class.getName());
    
        private int selectedId = -1;
       
