@@ -5,7 +5,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.logging.Logger;
-import java.util.logging.Level;
 
 
 
@@ -84,7 +83,6 @@ private void loadUsers() {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -102,7 +100,7 @@ private void loadUsers() {
                 {null, null}
             },
             new String [] {
-                "HOUSE_NUMEBER", "NAME"
+                "HOUSE_NUMBER", "NAME"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -115,7 +113,7 @@ private void loadUsers() {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, 100, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 120, 100, 40));
 
         jButton2.setText("delete");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -123,15 +121,7 @@ private void loadUsers() {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 160, 100, -1));
-
-        jButton3.setText("read");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 210, 100, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 200, 100, 40));
 
         jButton5.setText("logout");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +129,7 @@ private void loadUsers() {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 330, -1, -1));
+        jPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(432, 323, 70, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/stream_your_favorite_shows_with_smarters_pro_by_smarterspro_dh3ew6p-fullview.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -230,38 +220,6 @@ private void loadUsers() {
         dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        if (selectedId == -1) {
-            JOptionPane.showMessageDialog(this, "Select a user first!");
-            return;
-        }
-
-        try {
-            Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/ONLAY",
-                "root",
-                ""
-            );
-
-            String sql = "SELECT username, password FROM users WHERE id=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setInt(1, selectedId);
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                JOptionPane.showMessageDialog(this,
-                    "Username: " + rs.getString("username") +
-                    "\nPassword: " + rs.getString("password")
-                );
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -290,7 +248,6 @@ private void loadUsers() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
